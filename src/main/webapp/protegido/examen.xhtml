@@ -1,0 +1,90 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/WEB-INF/template/master.xhtml">
+	<ui:define name="content">
+		<h1>Examen</h1>
+		<h:form id="form" enctype="multipart/form-data">
+			<p:messages id="messages" showDetail="true" closable="true">
+				<p:autoUpdate />
+			</p:messages>
+			
+			<p:commandButton value="Nuevo" oncomplete="PF('wdlg').show();"
+				actionListener="#{examenBean.limpiarControles()}"
+				update=":form:dlg" process="@this" />
+				
+			<p:dataTable id="dt" var="e" value="#{examenBean.listar()}" rows="5"
+				paginator="true"
+				paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rowsPerPageTemplate="5,10,15">
+
+				<p:column headerText="Nombre">
+					<h:outputText value="#{e.nombres}" />
+				</p:column>
+				
+				<p:column headerText="Descripcion">
+					<h:outputText value="#{e.descripcion}" />
+				</p:column>
+				
+				<p:column headerText="Precio">
+					<h:outputText value="#{e.precioVenta}" />
+				</p:column>
+
+				<p:column headerText="Acciones" exportable="false">
+					<p:commandLink actionListener="#{examenBean.mostrarData(e)}"
+						oncomplete="PF('wdlg').show();" update=":form:dlg"
+						immediate="true" process="@this">
+						<h:graphicImage library="images" name="edit.jpg" />
+					</p:commandLink>
+				</p:column>
+				
+			</p:dataTable>
+			<p:dialog id="dlg" header="#{examenBean.tipoDialogo}"
+				widgetVar="wdlg" modal="true" closeOnEscape="true" resizable="false"
+				draggable="true">
+				<h:panelGrid id="pg" columns="2">
+
+					<p:outputLabel for="txtNombre" value="Nombre" />
+					<p:inputText id="txtNombre" value="#{examenBean.examen.nombres}"
+						required="true" />
+					<p:message for="txtNombre" display="text" />
+					<h:column />
+
+					<p:outputLabel for="txtDescripcion" value="Descripcion" />
+					<p:inputText id="txtDescripcion" value="#{examenBean.examen.descripcion}"
+						required="true" />
+					<p:message for="txtDescripcion" display="text" />
+					<h:column />
+
+					<p:outputLabel for="txtPrecio" value="Precio" />
+					<p:inputText id="txtPrecio"
+						value="#{examenBean.examen.precioVenta}" required="true" />
+					<p:message for="txtPrecio" display="text" />
+					<h:column />
+
+				</h:panelGrid>
+
+				<p:graphicImage value="/imagen/#{examenBean.examen.idExamen}"
+					width="120" height="120" />
+
+				<p:commandButton value="Registrar"
+					actionListener="#{examenBean.operar('R')}"
+					oncomplete="if(args &amp;&amp; !args.validationFailed) PF('wdlg').hide()"
+					ajax="true" update=":form:dt"
+					rendered="#{examenBean.tipoDialogo == 'Nuevo Examen'}" />
+				<p:commandButton value="Modificar"
+					actionListener="#{examenBean.operar('M')}"
+					oncomplete="if(args &amp;&amp; !args.validationFailed) PF('wdlg').hide()"
+					ajax="true" update=":form:dt"
+					rendered="#{examenBean.tipoDialogo == 'Modificar Examen'}" />
+			</p:dialog>
+		</h:form>
+
+	</ui:define>
+</ui:composition>
+<h:head></h:head>
+</html>

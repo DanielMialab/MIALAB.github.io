@@ -1,0 +1,143 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/WEB-INF/template/master.xhtml">
+	<ui:define name="content">
+		<h1>Cliente</h1>
+		<h:form id="form" enctype="multipart/form-data">
+			<p:messages id="messages" showDetail="true" closable="true">
+				<p:autoUpdate />
+			</p:messages>
+
+			<p:commandButton value="Nuevo" oncomplete="PF('wdlg').show();"
+				actionListener="#{clienteBean.limpiarControles()}"
+				update=":form:dlg" process="@this" />
+
+			<p:dataTable id="dt" var="c" value="#{clienteBean.lista}" rows="5"
+				paginator="true"
+				paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rowsPerPageTemplate="5,10,15">
+
+				<p:column headerText="Nombres Completos">
+					<h:outputText value="#{c.nombres} #{c.apellidos}" />
+				</p:column>
+
+				<p:column headerText="Sexo">
+					<h:outputText
+						value="#{c.sexo.equals('M') ? 'MASCULINO' : 'FEMENINO'}" />
+				</p:column>
+
+				<p:column headerText="Acciones" exportable="false">
+					<p:commandLink actionListener="#{clienteBean.mostrarData(c)}"
+						oncomplete="PF('wdlg').show();" update=":form:dlg"
+						immediate="true" process="@this">
+						<h:graphicImage library="images" name="edit.jpg" />
+					</p:commandLink>
+				</p:column>
+			</p:dataTable>
+			<p:dialog id="dlg" header="#{clienteBean.tipoDialogo}"
+				widgetVar="wdlg" modal="true" closeOnEscape="true" resizable="false"
+				draggable="true">
+				<h:panelGrid id="pg" columns="2">
+
+					<p:outputLabel for="txtCedula" value="Cedula" />
+					<p:inputText id="txtCedula" value="#{clienteBean.cliente.cedula}"
+						required="true" />
+					<p:message for="txtCedula" display="text" />
+					<h:column />
+
+					<p:outputLabel for="txtNombres" value="Nombres" />
+					<p:inputText id="txtNombres" value="#{clienteBean.cliente.nombres}"
+						required="true" />
+					<p:message for="txtNombres" display="text" />
+					<h:column />
+
+					<p:outputLabel for="txtApellidos" value="Apellidos" />
+					<p:inputText id="txtApellidos"
+						value="#{clienteBean.cliente.apellidos}" required="true" />
+					<p:message for="txtApellidos" display="text" />
+					<h:column />
+
+					<p:outputLabel for="txtTelefono" value="Telefono" />
+					<p:inputText id="txtTelefono"
+						value="#{clienteBean.cliente.telefono}" required="true" />
+					<p:message for="txtTelefono" display="text" />
+					<h:column />
+
+					<p:outputLabel for="txtCorreo" value="Correo" />
+					<p:inputText id="txtCorreo" value="#{clienteBean.cliente.correo}"
+						required="true" />
+					<p:message for="txtCorreo" display="text" />
+					<h:column />
+
+					<p:outputLabel for="txtDireccion" value="Dirección" />
+					<p:inputTextarea id="txtDireccion"
+						value="#{clienteBean.cliente.direccion}" counter="display"
+						rows="1" cols="20" maxlength="200"
+						counterTemplate="{0} caracteres restantes." autoResize="false"
+						required="true" />
+					<p:message for="txtDireccion" display="text" />
+					<h:column />
+
+					<p:outputLabel for="optSexo" value="Sexo" />
+					<p:selectOneRadio id="optSexo" value="#{clienteBean.cliente.sexo}"
+						required="true">
+						<f:selectItem itemLabel="Masculino" itemValue="M" />
+						<f:selectItem itemLabel="Femenino" itemValue="F" />
+					</p:selectOneRadio>
+					<p:message for="optSexo" display="text" />
+					<h:column />
+
+					<p:outputLabel for="txtEdad" value="Edad" />
+					<p:inputText id="txtEdad" value="#{clienteBean.cliente.edad}"
+						required="true" />
+					<p:message for="txtEdad" display="text" />
+					<h:column />
+
+					<h:column />
+					<h:outputLabel id="display" />
+					<h:column />
+					<h:column />
+
+					<p:outputLabel for="txtUsuario" value="Usuario" />
+					<p:inputText id="txtUsuario" value="#{usuariosBean.us.usuario}"
+						required="true" />
+					<p:message for="txtUsuario" display="text" />
+					<h:column />
+
+					<p:outputLabel for="pwd1" value="Clave 1" />
+					<p:password id="pwd1" value="#{usuariosBean.us.clave}"
+						label="Password 1" required="true" />
+					<p:message for="pwd1" display="text" />
+					<h:column />
+
+					<p:outputLabel for="rolEdit" value="Rol usuario:" />
+					<p:selectOneRadio id="rolEdit" disabled="true" value="#{usuariosBean.us.role}">
+						<f:selectItem itemLabel="Administrador" itemValue="Admin" />
+						<f:selectItem itemLabel="Cliente" itemValue="cliente" />
+					</p:selectOneRadio>
+					
+					
+
+					<p:commandButton value="Registrar"
+						actionListener="#{clienteBean.operar('R')}"
+						oncomplete="if(args &amp;&amp; !args.validationFailed) PF('wdlg').hide()"
+						ajax="true" update=":form:dt"
+						rendered="#{clienteBean.tipoDialogo == 'Nuevo Cliente'}" />
+					<p:commandButton value="Modificar"
+						actionListener="#{clienteBean.operar('M')}"
+						oncomplete="if(args &amp;&amp; !args.validationFailed) PF('wdlg').hide()"
+						ajax="true" update=":form:dt"
+						rendered="#{clienteBean.tipoDialogo == 'Modificar Cliente'}" />
+				</h:panelGrid>
+			</p:dialog>
+		</h:form>
+
+	</ui:define>
+</ui:composition>
+<h:head></h:head>
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+
+
+
+
+
+
+</h:head>
+<ui:composition template="/WEB-INF/template/master.xhtml">
+	<ui:define name="content">
+		<h1>Principal</h1>
+		<h:form id="form" enctype="multipart/form-data">
+
+			<h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5">
+
+				<h:outputLabel for="@next" value="Mis Facturas" />
+				<p:dataTable var="factura"
+					value="#{indexBean.obtenerFaturasClienteLogueado()}"
+					emptyMessage="CLIENTE NO REGISTRA FACTURAS!" id="x" style="fondo">
+
+
+
+					<p:column headerText="Fecha">
+						<h:outputText value="#{factura.fecha}" />
+					</p:column>
+					<p:column headerText="Total">
+						<h:outputText value="#{factura.total}" />
+					</p:column>
+					<p:column headerText="Factura">
+						<h:outputText value="#{factura.codigoEstablecimiento}-#{factura.codigoPuntoEmision}-#{factura.secuenciaComprobante}" />
+					</p:column>
+					<p:column headerText="Descargar">
+						<p:column>
+
+
+							<h:commandButton image="../resources/images/pdf-icon.png"
+								action="#{reportManager.imprimir(factura)}" ajax="false" />
+
+						</p:column>
+					</p:column>
+
+
+				</p:dataTable>
+
+
+
+
+
+
+			</h:panelGrid>
+
+
+
+
+		</h:form>
+	</ui:define>
+</ui:composition>
+
+</html>

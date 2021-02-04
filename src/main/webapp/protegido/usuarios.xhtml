@@ -1,0 +1,126 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head></h:head>
+<body>
+	<ui:composition template="/WEB-INF/template/master.xhtml">
+		<ui:define name="content">
+
+			<h1>Usuarios</h1>
+			<h:form id="form">
+				<p:growl id="growl" showDetail="true" autoUpdate="true" />
+				
+				<p:messages id="messages" showDetail="true" closable="true">
+				<p:autoUpdate />
+			</p:messages>
+				
+				<p:dataTable id="dt" var="u" value="#{usuariosBean.list}" rows="5"
+				paginator="true"
+				paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rowsPerPageTemplate="5,10,15">
+
+				<p:column headerText="ID">
+					<h:outputText value="#{u.idUsuario}" />
+				</p:column>
+
+				<p:column headerText="USUARIO">
+					<h:outputText
+						value="#{u.usuario}" />
+				</p:column>
+
+				<p:column headerText="Acciones" exportable="false">
+					<p:commandLink actionListener="#{clienteBean.mostrarData(c)}"
+						oncomplete="PF('wdlg').show();" update=":form:dlg"
+						immediate="true" process="@this">
+						<h:graphicImage library="images" name="edit.jpg" />
+					</p:commandLink>
+				</p:column>
+			</p:dataTable>
+			
+			
+			<p:dialog id="dlg" header="#{clienteBean.tipoDialogo}"
+				widgetVar="wdlg" modal="true" closeOnEscape="true" resizable="false"
+				draggable="true">
+				<h:panelGrid id="pg" columns="2">
+				
+				
+				
+					<p:outputLabel for="txtUsuario" value="Usuario"/>
+					<p:inputText id="txtUsuario" value="#{usuariosBean.us.usuario}" required="true" />
+					<p:message for="txtUsuario" display="text"/>
+					<h:column/>
+
+					<p:outputLabel for="txtCedula" value="Cedula" />
+					<p:inputText id="txtCedula" value="#{clienteBean.cliente.cedula}"
+						required="true" />
+					<p:message for="txtCedula" display="text" />
+					<h:column />
+					
+					<p:outputLabel for="txtNombres" value="Nombres" />
+					<p:inputText id="txtNombres" value="#{clienteBean.cliente.nombres}"
+						required="true" />
+					<p:message for="txtNombres" display="text" />
+					<h:column />
+					
+					<p:outputLabel for="txtApellidos" value="Apellidos" />
+					<p:inputText id="txtApellidos"
+						value="#{clienteBean.cliente.apellidos}" required="true" />
+					<p:message for="txtApellidos" display="text" />
+					<h:column />
+					
+					<p:outputLabel for="txtTelefono" value="Telefono" />
+					<p:inputText id="txtTelefono"
+						value="#{clienteBean.cliente.telefono}" required="true" />
+					<p:message for="txtTelefono" display="text" />
+					<h:column />
+					
+					<p:outputLabel for="txtCorreo" value="Correo" />
+					<p:inputText id="txtCorreo" value="#{clienteBean.cliente.correo}"
+						required="true" />
+					<p:message for="txtCorreo" display="text" />
+					<h:column />
+					
+					<p:outputLabel for="txtDireccion" value="Direccion" />
+					<p:inputText id="txtDireccion" required="true"
+						value="#{clienteBean.cliente.direccion}" />
+					<p:message for="txtDireccion" display="icon" />
+					<h:column />
+					
+					<p:outputLabel for="optSexo" value="Sexo" />
+					<p:selectOneRadio id="optSexo" value="#{clienteBean.cliente.sexo}"
+						required="true">
+						<f:selectItem itemLabel="Masculino" itemValue="M" />
+						<f:selectItem itemLabel="Femenino" itemValue="F" />
+					</p:selectOneRadio>
+					<p:message for="optSexo" display="text" />
+					<h:column />
+					
+					<p:outputLabel for="txtEdad" value="Edad" />
+					<p:inputText id="txtEdad" value="#{clienteBean.cliente.edad}"
+						required="true" />
+					<p:message for="txtEdad" display="text" />
+					<h:column />
+
+				</h:panelGrid>
+
+				<p:commandButton value="Registrar"
+					actionListener="#{clienteBean.operar('R')}"
+					oncomplete="if(args &amp;&amp; !args.validationFailed) PF('wdlg').hide()"
+					ajax="true" update=":form:dt"
+					rendered="#{clienteBean.tipoDialogo == 'Nuevo Cliente'}" />
+				<p:commandButton value="Modificar"
+					actionListener="#{clienteBean.operar('M')}"
+					oncomplete="if(args &amp;&amp; !args.validationFailed) PF('wdlg').hide()"
+					ajax="true" update=":form:dt"
+					rendered="#{clienteBean.tipoDialogo == 'Modificar Cliente'}" />
+			</p:dialog>
+				
+			</h:form>
+		</ui:define>
+	</ui:composition>
+</body>
+</html>

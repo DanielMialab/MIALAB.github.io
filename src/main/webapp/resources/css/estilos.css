@@ -1,0 +1,19 @@
+.resolucion {
+	width: 850px;
+	margin: 0 auto;
+}
+
+.ui-widget {
+	font-size: 100% !important;
+}
+
+.ui-widget .ui-widget {
+	font-size: 100% !important;
+}
+
+body {
+	background-color: #fcf8a3;
+	
+}
+
+

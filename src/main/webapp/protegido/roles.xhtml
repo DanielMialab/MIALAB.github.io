@@ -1,0 +1,45 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head></h:head>
+<body>
+	<ui:composition template="/WEB-INF/template/master.xhtml">
+		<ui:define name="content">
+
+			<h1>Roles</h1>
+			<h:form id="form">
+				<p:growl id="growl" showDetail="true" autoUpdate="true" />
+				<p:dataTable value="#{rolBean.lista}" var="fila" editable="true">
+					<p:ajax event="rowEdit" listener="#{rolBean.onRowEdit}"
+						update=":form:growl" />
+					<p:column headerText="Id" filterBy="#{fila.idrol}" filterMatchMode="contains">
+						<h:outputText value="#{fila.idrol}" />
+					</p:column>
+
+					<p:column headerText="Rol" filterBy="#{fila.tipo}" filterMatchMode="contains">
+						<p:cellEditor>
+							<f:facet name="output">
+								<p:outputLabel value="#{fila.tipo}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText>
+									<p:inputText value="#{fila.tipo}" />
+								</p:inputText>
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+
+					<p:column style="width:35px">
+						<p:rowEditor />
+					</p:column>
+
+				</p:dataTable>
+			</h:form>
+		</ui:define>
+	</ui:composition>
+</body>
+</html>

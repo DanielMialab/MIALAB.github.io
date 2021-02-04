@@ -1,0 +1,72 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+
+<h:head>
+	<h:outputStylesheet library="css" name="estilos.css" />
+
+	<f:event listener="#{masterBean.verificarSesion()}"
+		type="preRenderView"></f:event>
+
+	<title><ui:insert name="titulo">Inicio</ui:insert></title>
+</h:head>
+<body class="resolucion">
+	<ui:insert name="header">
+		<p:menubar>
+			<p:menuitem value="Inicio" url="../protegido/principal.xhtml"
+				icon="pi pi-home" />
+
+			<p:menuitem value="Facturar" url="../protegido/factura.xhtml"
+				icon="pi pi-star" rendered="#{indexBean.showManager()}" />
+
+			<p:submenu label="Mantenimiento" icon="pi pi-cog"
+				rendered="#{indexBean.showManager()}">
+				<p:menuitem value="Cliente" url="../protegido/cliente.xhtml"
+					icon="pi pi-user" />
+				<p:separator />
+				<p:menuitem value="Usuario" url="../protegido/usuarios.xhtml"
+					icon="pi pi-users" />
+				<p:separator />
+				<p:menuitem value="Examenes" url="../protegido/examen.xhtml"
+					icon="pi pi-users" />
+				<p:separator />
+				<p:menuitem value="Roles" url="../protegido/roles.xhtml"
+					icon="pi pi-user-edit" />
+				<p:separator />
+
+
+
+			</p:submenu>
+
+			<f:facet name="options">
+
+				<p:commandButton value="Cerrar sesión" icon="pi pi-power-off"
+					actionListener="#{masterBean.cerrarSesion()}"
+					action="index?faces-redirect=true" immediate="true" />
+
+			</f:facet>
+
+		</p:menubar>
+	</ui:insert>
+
+	<ui:insert name="body">
+
+		<h1>#{indexBean.obtenerUsuarioLogueado().role} :
+			#{indexBean.obtenerUsuarioLogueado().cliente.nombres}
+			#{indexBean.obtenerUsuarioLogueado().cliente.apellidos}
+			#{indexBean.obtenerUsuarioLogueado().cliente.cedula}</h1>
+
+	</ui:insert>
+	<ui:insert name="content"></ui:insert>
+
+	<ui:insert name="footer">
+		<div>Copyright Daniel Tapia, 2020 Análisis de Sistemas</div>
+	</ui:insert>
+
+</body>
+
+</html>

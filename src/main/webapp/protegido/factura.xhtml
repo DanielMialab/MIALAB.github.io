@@ -1,0 +1,108 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/WEB-INF/template/master.xhtml">
+	<ui:define name="content">
+		<h1>FACTURA Nro: #{facturaBean.currentFactura.codigoEstablecimiento}-#{facturaBean.currentFactura.codigoPuntoEmision}-#{facturaBean.currentFactura.secuenciaComprobante}</h1>
+		<h:form id="form" enctype="multipart/form-data">
+			<p:messages id="messages" showDetail="true" closable="true">
+				<p:autoUpdate />
+			</p:messages>
+
+			<h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5">
+
+				
+				
+				
+				
+				
+				<p:outputLabel for="@next" value="Cliente: " />
+				<p:selectOneMenu id="client" editable="true" filter="true"
+					filterMatchMode="startsWith" value="#{facturaBean.currentCliente}"
+					converter="clienteConverter" required="true">
+					<f:selectItem itemLabel="Ingrese el cliente"
+						noSelectionOption="true" />
+					<f:selectItems value="#{clienteBean.lista}"
+						itemLabel="#{cliente.nombres} #{cliente.apellidos}" var="cliente" />
+
+				</p:selectOneMenu>
+
+				<p:outputLabel for="@next" value="Examen: " />
+				<p:selectOneMenu id="examen" editable="true"
+					filterMatchMode="startsWith" filter="true" autoWidth="true"
+					value="#{facturaBean.currentExamen}" converter="examenConverter"
+					required="true">
+					<f:selectItem itemLabel="Seleccione Examen"
+						noSelectionOption="true" />
+					<f:selectItems value="#{examenBean.listar()}"
+						itemLabel="#{examen.nombres} ------> #{examen.precioVenta}"
+						var="examen" />
+				</p:selectOneMenu>
+				<h:outputLabel for="@next" value="Cantidad: " />
+				<p:spinner id="basic" value="#{facturaBean.amount}" required="true"
+					min="1" max="10">
+					<p:ajax event="change" update="@this" />
+				</p:spinner>
+
+				<h:outputLabel for="@next" value="Acciones" />
+				<h:panelGroup>
+					<p:commandButton value="Agregar"
+						actionListener="#{facturaBean.addNewItem()}"
+						update=":form:x :form:y :form:z :form:a" />
+
+
+					<p:commandButton value="Facturar"
+						actionListener="#{facturaBean.save()}" />
+
+
+			
+
+				</h:panelGroup>
+
+
+				<h:outputLabel for="@next" value="Detalle Factura" />
+				<p:dataTable var="itemFac"
+					value="#{facturaBean.currentFactura.detalleFacturacion}"
+					emptyMessage="NO EXISTEN PRODUCTOS FACTURADOS" id="x">
+
+					<p:column headerText="Cantidad">
+						<h:outputText value="#{itemFac.catindad}" />
+					</p:column>
+					<p:column headerText="Detalle">
+						<h:outputText value="#{itemFac.examenVinculado.nombres}" />
+					</p:column>
+					<p:column headerText="Percio Unitario">
+						<h:outputText value="#{itemFac.precioUnitarioActual}" />
+					</p:column>
+					<p:column headerText="Percio Total Item">
+						<h:outputText value="#{itemFac.precioTotalItem}" />
+					</p:column>
+
+					<p:column headerText="Acciones">
+						<p:commandButton value="Eliminar"
+							actionListener="#{facturaBean.removeItem(itemFac)}"
+							update=":form:x :form:y :form:z :form:a">
+						</p:commandButton>
+					</p:column>
+				</p:dataTable>
+
+
+				<h:outputLabel for="@next" value="SUBTOTAL:" />
+				<h:outputText value="#{facturaBean.currentFactura.subtotal}" id="y" />
+				<h:outputLabel for="@next" value="IVA 12%:" />
+				<h:outputText value="#{facturaBean.currentFactura.iva}" id="z" />
+				<h:outputLabel for="@next" value="TOTAL:" />
+				<h:outputText value="#{facturaBean.currentFactura.total}" id="a" />
+
+
+
+			</h:panelGrid>
+		</h:form>
+	</ui:define>
+</ui:composition>
+<h:head></h:head>
+</html>

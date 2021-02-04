@@ -1,0 +1,88 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"> 
+
+<h:head>
+<link href="./resources/css/index.css" rel="stylesheet" type="text/css" /></h:head> 
+<body>
+	<div class="registrarDiv" style="width: 400px">
+		<h:form>
+		<p:growl id="growl" showDetail="true" sticky="true" />
+			<p:messages autoUpdate="true"/>
+			
+			<p:panel>
+				<f:facet name="header">Registro de Usuarios</f:facet>
+				<p:panelGrid id="pg" columns="4" layout="tabular" styleClass="ui-panelgrid-blank ">
+					
+					<p:outputLabel for="txtCedula" value="Cedula"/>
+					<p:inputText id="txtCedula" value="#{registroBean.cliente.cedula}" required="true"/>
+					<p:message for="txtCedula" display="text"/>
+					<h:column/>
+					
+					<p:outputLabel for="txtNombres" value="Nombres"/>
+					<p:inputText id="txtNombres" value="#{registroBean.cliente.nombres}" required="true"/>
+					<p:message for="txtNombres" display="text"/>
+					<h:column/>
+					
+					<p:outputLabel for="txtApellidos" value="Apellidos"/>
+					<p:inputText id="txtApellidos" value="#{registroBean.cliente.apellidos}" required="true"/>
+					<p:message for="txtApellidos" display="text"/>
+					<h:column/>
+					
+					<p:outputLabel for="txtTelefono" value="Telefono" />
+					<p:inputText id="txtTelefono"
+						value="#{registroBean.cliente.telefono}" required="true" />
+					<p:message for="txtTelefono" display="text" />
+					<h:column />
+					
+					<p:outputLabel for="txtCorreo" value="Correo"/>
+					<p:inputText id="txtCorreo" value="#{registroBean.cliente.correo}" required="true"/>
+					<p:message for="txtCorreo" display="text"/>
+					<h:column/>
+					
+					<p:outputLabel for="txtDireccion" value="Dirección"/>
+					<p:inputTextarea id="txtDireccion" value="#{registroBean.cliente.direccion}" counter="display" rows="5" cols="30" maxlength="250" counterTemplate="{0} caracteres restantes." autoResize="false" required="true"/>
+					<p:message for="txtDireccion" display="text"/>
+					<h:column/>
+										
+					<p:outputLabel for="optSexo" value="Sexo"/>
+					<p:selectOneRadio id="optSexo" value="#{registroBean.cliente.sexo}" required="true">
+						<f:selectItem itemLabel="Masculino" itemValue="M"/>
+						<f:selectItem itemLabel="Femenino" itemValue="F"/>
+					</p:selectOneRadio>
+					<p:message for="optSexo" display="text"/>
+					<h:column/>
+					
+					<p:outputLabel for="txtEdad" value="Edad"/>
+					<p:inputText id="txtEdad" value="#{registroBean.cliente.edad}" required="true"/>
+					<p:message for="txtEdad" display="text"/>
+					<h:column/>
+					
+
+					<h:column/>
+					<h:outputLabel id="display" />
+					<h:column/>
+					<h:column/>
+					
+					<p:outputLabel for="txtUsuario" value="Usuario"/>
+					<p:inputText id="txtUsuario" value="#{registroBean.usuario.usuario}" required="true"/>
+					<p:message for="txtUsuario" display="text"/>
+					<h:column/>
+					
+					<p:outputLabel for="pwd1" value="Clave 1"/>
+					<p:password id="pwd1" value="#{registroBean.usuario.clave}" label="Password 1" required="true" />
+					<p:message for="pwd1" display="text"/>
+					<h:column/>
+					
+										
+				</p:panelGrid>
+				<p:commandButton value="Inicio" action="index?faces-redirect=true" immediate="true"/>
+				<p:commandButton value="Registrar" action="#{registroBean.registrar()}" update="@form"/>
+			</p:panel>
+		</h:form>
+	</div>
+</body> 
+</html>
